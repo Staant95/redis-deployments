@@ -1,32 +1,9 @@
 version: '3.9'
-
-networks:
-  redis-stack-network:
-    driver: bridge
-
 services:
-  primary-redis-stack-server:
-    container_name: primary
+  redis-stack-server:
+    container_name: redis-stack-server
     image: redis/redis-stack-server:latest
-    networks:
-      redis-stack-network:
-        aliases:
-          - "primary"
     ports:
-      - 6388:6388
+      - 6388:6379
     volumes:
-      - ./replication/primary/primary.conf:/usr/local/etc/redis/redis.conf
-      - ./replication/primary/data:/data
-    command: redis-server /usr/local/etc/redis/redis.conf
-
-  replica-redis-stack-server:
-    container_name: replica
-    image: redis/redis-stack-server:latest
-    networks:
-      - redis-stack-network
-    ports:
-      - 6389:6389
-    volumes:
-      - ./replication/replica/replica.conf:/usr/local/etc/redis/redis.conf
-      - ./replication/replica/data:/data
-    command: redis-server /usr/local/etc/redis/redis.conf
+      - ./data:/data
